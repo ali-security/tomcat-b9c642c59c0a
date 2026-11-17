@@ -88,6 +88,16 @@ public class TestRewriteValve extends TomcatBaseTest {
         doTestRewrite("RewriteRule ^/b/(.*) /b/../a/$1", "/b/%255A", "/b/../a/%255A");
     }
 
+    @Test
+    public void testNextFlagRestartsAtFirstRule() throws Exception {
+        // The [N] flag restarts rule processing at the first rule, so the
+        // first rule must be applied to the result of the second rule. If
+        // processing restarted at the second rule the first rule would be
+        // skipped and the request would be left as /deny/x.
+        doTestRewrite("RewriteRule ^/deny(.*) /W$1\n" +
+                "RewriteRule ^/start(.*) /deny$1 [N]", "/start/x", "/W/x");
+    }
+
     // BZ 57863
     @Test
     public void testRewriteMap01() throws Exception {

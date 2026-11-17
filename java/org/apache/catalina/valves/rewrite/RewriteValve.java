@@ -545,7 +545,7 @@ public class RewriteValve extends ValveBase {
                 }
                 // - next (redo again)
                 if (rule.isNext() && newtest != null) {
-                    i = 0;
+                    i = -1;
                     continue;
                 }
                 // - skip (n rules)
